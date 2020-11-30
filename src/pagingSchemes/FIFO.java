@@ -42,7 +42,7 @@ public class FIFO extends Pager {
         fifoQueue.remove(0);
         System.out.println("Current memory state:");
         System.out.println(fifoQueue);
-        
+
         // add page to the fifoQueue
         System.out.println("Add page " + page + " to memory.");
         fifoQueue.add(page);
