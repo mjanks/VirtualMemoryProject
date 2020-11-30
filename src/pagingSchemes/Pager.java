@@ -9,7 +9,11 @@ public abstract class Pager {
         return numFrames;
     }
 
+    public int getAccesses() { return accesses; }
+
     public abstract void setNumFrames(int n);
+
+    public abstract void setAccesses(int n);
 
     public abstract void print();
 
