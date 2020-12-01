@@ -51,14 +51,14 @@ public class Main {
         testData.add(5);
 
         // FIFO
-        FIFO fifo = new FIFO();
-        fifo.setNumFrames(4); // part of refString, first integer of reference string
-        for(int i=0; i < testData.size(); i++) {
-            if(!fifo.isPageInMemory(testData.get(i))) {
-                fifo.replacePage(testData.get(i));
-            }
-        }
-        fifo.print();
+//        FIFO fifo = new FIFO();
+//        fifo.setNumFrames(4); // part of refString, first integer of reference string
+//        for(int i=0; i < testData.size(); i++) {
+//            if(!fifo.isPageInMemory(testData.get(i))) {
+//                fifo.replacePage(testData.get(i));
+//            }
+//        }
+//        fifo.print();
 
 
 
@@ -67,14 +67,14 @@ public class Main {
 
         // OPT
         // Have not addressed the ambiguity
-        OPT opt = new OPT();
-        opt.setNumFrames(4);
-        for(int i=0; i < testData.size(); i++) {
-            if(!opt.isPageInMemory(testData.get(i))) {
-                opt.replacePage(testData.get(i), testData, i);
-            }
-        }
-        opt.print();
+//        OPT opt = new OPT();
+//        opt.setNumFrames(4);
+//        for(int i=0; i < testData.size(); i++) {
+//            if(!opt.isPageInMemory(testData.get(i))) {
+//                opt.replacePage(testData.get(i), testData, i);
+//            }
+//        }
+//        opt.print();
 
         // LRU
         LRU lru = new LRU();

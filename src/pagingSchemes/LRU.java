@@ -7,8 +7,8 @@ public class LRU extends Pager {
     // replace the page that has not been used for the longest period of time.
     // This approach is the least recently used (LRU) algorithm.
     LinkedList<Integer> lruStack= new LinkedList<Integer>();
-
-
+    int pageToRemove;
+    int removed; // for testing
 
     public boolean isPageInMemory(int page) {
         for(int i=0; i < memoryState.size(); i++) {
@@ -40,9 +40,9 @@ public class LRU extends Pager {
             System.out.println("No match and space available. Add page " + page + " to memory.");
             memoryState.add(page); // add to memory
             numFaults++; // increment faults
+            System.out.println("numFaults: " + numFaults);
 
-            // ********** IMPLEMENT LRU! REPLACE THE PAGE! ************
-            // Implement a stack using a doubly linked list.
+            // Stack using a linked list.
             // Whenever a page is referenced, it is removed from the stack
             // and put on the top.
             System.out.println("lruStack before stack check: " + lruStack);
@@ -52,18 +52,40 @@ public class LRU extends Pager {
             }
             lruStack.addFirst(page); // then add page to head of list
             System.out.println("lruStack after add adjustment: " + lruStack);
-            System.out.println("numFaults: " + numFaults);
+
+
             System.out.println("Current memory state:");
             System.out.println(memoryState);
             return memoryState;
         }
 
+        // remove LRU page from memoryState
+        pageToRemove = lruStack.getLast(); // page to remove
+        System.out.println("pageToRemove: " + pageToRemove);
+        removed = lruStack.removeLast(); // remove last element from lruStack
+        System.out.println("removed: " + removed);
+        for(int i=0; i < memoryState.size(); i++) {
+            if(memoryState.get(i) == pageToRemove) {
+                memoryState.remove(i);
+            }
+        }
 
+        // add new page to memoryState
+        memoryState.add(page);
+        numFaults++;
+        System.out.println("numFaults: " + numFaults);
 
+        // update the stack
+        System.out.println("lruStack before stack check: " + lruStack);
+        if(lruStack.contains(page)) { // if stack contains page
+            lruStack.remove(lruStack.indexOf(page)); // remove it
+            System.out.println("lruStack after remove adjustment: " + lruStack);
+        }
+        lruStack.addFirst(page); // then add page to head of list
+        System.out.println("lruStack after add adjustment: " + lruStack);
 
-
-
-
+        System.out.println("Current memory state:");
+        System.out.println(memoryState);
         return memoryState;
     }
 
@@ -80,9 +102,9 @@ public class LRU extends Pager {
     @Override
     public void print() {
         System.out.println("*********************** LRU ***********************");
-        System.out.println("OPT numFrames: " + numFrames);
-        System.out.println("OPT memoryState: " + memoryState);
-        System.out.println("OPT numFaults: " + numFaults);
+        System.out.println("LRU numFrames: " + numFrames);
+        System.out.println("LRU memoryState: " + memoryState);
+        System.out.println("LRU numFaults: " + numFaults);
         System.out.println("*********************** LRU ***********************");
 
     }
