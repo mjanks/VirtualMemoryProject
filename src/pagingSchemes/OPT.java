@@ -9,7 +9,7 @@ public class OPT extends Pager{
     int distance = 0;
     boolean found = false;
     int max = 0;
-    int bigNum = 10000;
+    int bigNum = 1000000000;
 
     public boolean isPageInMemory(int page) {
         for(int i=0; i < memoryState.size(); i++) {
@@ -50,7 +50,7 @@ public class OPT extends Pager{
                 count++;
             }
             if(!found) { // deals with situation when the incoming page never again appears in the refString
-                bigNum++;
+                bigNum++; // does not address the ambiguity
                 distance =  bigNum;
             }
 

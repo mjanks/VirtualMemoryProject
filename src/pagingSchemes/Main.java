@@ -32,35 +32,36 @@ public class Main {
         refString.add(0);
         refString.add(1);
 
-        ArrayList<Integer> optTest = new ArrayList<>();
-        optTest.add(1);
-        optTest.add(2);
-        optTest.add(3);
-        optTest.add(4);
-        optTest.add(2);
-        optTest.add(7);
-        optTest.add(5);
-        optTest.add(1);
-        optTest.add(1);
-        optTest.add(6);
-        optTest.add(4);
-        optTest.add(7);
-        optTest.add(2);
-        optTest.add(1);
-        optTest.add(2);
-        optTest.add(5);
+        ArrayList<Integer> testData = new ArrayList<>();
+        testData.add(1);
+        testData.add(2);
+        testData.add(3);
+        testData.add(4);
+        testData.add(2);
+        testData.add(7);
+        testData.add(5);
+        testData.add(1);
+        testData.add(1);
+        testData.add(6);
+        testData.add(4);
+        testData.add(7);
+        testData.add(2);
+        testData.add(1);
+        testData.add(2);
+        testData.add(5);
 
         // FIFO
         FIFO fifo = new FIFO();
         fifo.setNumFrames(4); // part of refString, first integer of reference string
-        for(int i=0; i < optTest.size(); i++) {
-            if(!fifo.isPageInMemory(optTest.get(i))) {
-                fifo.replacePage(optTest.get(i));
+        for(int i=0; i < testData.size(); i++) {
+            if(!fifo.isPageInMemory(testData.get(i))) {
+                fifo.replacePage(testData.get(i));
             }
         }
         fifo.print();
 
-        // LRU
+
+
 
         // LFU
 
@@ -68,12 +69,22 @@ public class Main {
         // Have not addressed the ambiguity
         OPT opt = new OPT();
         opt.setNumFrames(4);
-        for(int i=0; i < optTest.size(); i++) {
-            if(!opt.isPageInMemory(optTest.get(i))) {
-                opt.replacePage(optTest.get(i), optTest, i);
+        for(int i=0; i < testData.size(); i++) {
+            if(!opt.isPageInMemory(testData.get(i))) {
+                opt.replacePage(testData.get(i), testData, i);
             }
         }
         opt.print();
+
+        // LRU
+        LRU lru = new LRU();
+        lru.setNumFrames(4);
+        for(int i=0; i < testData.size(); i++) {
+            if (!lru.isPageInMemory(testData.get(i))) {
+                lru.replacePage(testData.get(i));
+            }
+        }
+        lru.print();
 
 
 
