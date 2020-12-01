@@ -1,6 +1,5 @@
 package pagingSchemes;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class OPT extends Pager{
@@ -21,7 +20,6 @@ public class OPT extends Pager{
         }
         return false;
     }
-
 
     public ArrayList<Integer> replacePage(int page, ArrayList<Integer> refString, int index) {
         if (memoryState.size() < numFrames) {
@@ -63,7 +61,6 @@ public class OPT extends Pager{
 
         // find the distance/page pair with the greatest distance. Distance is the key, page is the value
         System.out.println(distancePageMap);
-        //int key = 13; // find the highest key! ***** NEED TO IMPLEMENT! *******
         max = 0;
         Set<Integer> keys = distancePageMap.keySet();
         Object[] keysArr = keys.toArray();
@@ -75,20 +72,17 @@ public class OPT extends Pager{
         }
         System.out.println("max: " + max);
 
-
-
-
         for(int i=0; i < memoryState.size(); i++) {
             if(memoryState.get(i) == distancePageMap.get(max)) { // key is max key
                 System.out.println("Adding page " + page + ". State before page replace: " + memoryState);
                 System.out.println("index: " + index);
                 memoryState.set(i, page);
+                numFaults++;
                 System.out.println("Memory State after page replace: " + memoryState);
             }
         }
         return memoryState;
     }
-
 
     @Override
     public void setNumFrames(int n) {
