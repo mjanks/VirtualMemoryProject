@@ -1,5 +1,7 @@
 package pagingSchemes;
 
+import java.util.ArrayList;
+
 public class LFU extends Pager {
     @Override
     public void setNumFrames(int n) {
@@ -15,4 +17,7 @@ public class LFU extends Pager {
     public void print() {
 
     }
+
+
+
 }

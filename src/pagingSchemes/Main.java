@@ -33,21 +33,32 @@ public class Main {
         refString.add(1);
 
         // FIFO
-        FIFO f = new FIFO();
-        f.setNumFrames(3); // part of refString, first integer of reference string
-        f.print();
-        for(int i=0; i < refString.size(); i++) {
-            if(!f.isPageInQueue(refString.get(i))) {
-                f.replacePage(refString.get(i));
-            }
-        }
-        f.print();
+//        FIFO fifo = new FIFO();
+//        fifo.setNumFrames(3); // part of refString, first integer of reference string
+//        fifo.print();
+//        for(int i=0; i < refString.size(); i++) {
+//            if(!fifo.isPageInMemory(refString.get(i))) {
+//                fifo.replacePage(refString.get(i));
+//            }
+//        }
+//        fifo.print();
 
         // LRU
 
         // LFU
 
         // OPT
+        OPT opt = new OPT();
+        opt.setNumFrames(3);
+        for(int i=0; i < refString.size(); i++) {
+            //System.out.println(refString);
+            if(!opt.isPageInMemory(refString.get(i))) {
+                //System.out.println("here");
+                //System.out.println(opt.memoryState);
+                opt.replacePage(refString.get(i), refString, i);
+            }
+        }
+        opt.print();
 
 
     }

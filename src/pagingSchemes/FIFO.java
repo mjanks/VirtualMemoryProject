@@ -3,17 +3,14 @@ package pagingSchemes;
 import java.util.ArrayList;
 
 public class FIFO extends Pager {
-    ArrayList<Integer> fifoQueue = new ArrayList<Integer>();  // size = numFrames
-    int count = 0;
-    boolean match = false;
 
     // check if page is in queue
-    public boolean isPageInQueue(int page) {
-        for(int i=0; i < fifoQueue.size(); i++) {
-            if (page == fifoQueue.get(i)) {
+    public boolean isPageInMemory(int page) {
+        for(int i=0; i < memoryState.size(); i++) {
+            if (page == memoryState.get(i)) {
                 System.out.println("matched: " + page);
                 System.out.println("move on to next page. This page already in memory");
-                System.out.println(fifoQueue);
+                System.out.println(memoryState);
                 return true;
             }
         }
@@ -22,35 +19,35 @@ public class FIFO extends Pager {
 
     // call this if isPageInQueue returns false; need to replace the page
     public ArrayList<Integer> replacePage(int page) {
-        if (fifoQueue.size() < numFrames) {
+        if (memoryState.size() < numFrames) {
             System.out.println("Current memory state:");
-            System.out.println(fifoQueue);
+            System.out.println(memoryState);
             System.out.println("No match and space available. Add page " + page + " to memory.");
-            fifoQueue.add(page);
+            memoryState.add(page);
             numFaults++;
             System.out.println("numFaults: " + numFaults);
             System.out.println("Current memory state:");
-            System.out.println(fifoQueue);
-            return fifoQueue;
+            System.out.println(memoryState);
+            return memoryState;
         }
 
-        // if no match AND fifoQueue FULL (size = numFrames),
-        // remove the first element of the ArrayList fifoQueue
+        // if no match AND memoryState FULL (size = numFrames),
+        // remove the first element of the ArrayList memoryState
         System.out.println("Current memory state:");
-        System.out.println(fifoQueue);
-        System.out.println("All frames full. Remove page " + fifoQueue.get(0) + " from memory.");
-        fifoQueue.remove(0);
+        System.out.println(memoryState);
+        System.out.println("All frames full. Remove page " + memoryState.get(0) + " from memory.");
+        memoryState.remove(0);
         System.out.println("Current memory state:");
-        System.out.println(fifoQueue);
+        System.out.println(memoryState);
 
-        // add page to the fifoQueue
+        // add page to the memoryState
         System.out.println("Add page " + page + " to memory.");
-        fifoQueue.add(page);
+        memoryState.add(page);
         numFaults++;
         System.out.println("numFaults: " + numFaults);
         System.out.println("Current memory state:");
-        System.out.println(fifoQueue);
-        return fifoQueue;
+        System.out.println(memoryState);
+        return memoryState;
     }
 
     @Override
@@ -65,8 +62,8 @@ public class FIFO extends Pager {
 
     @Override
     public void print() {
-        System.out.println("numFrames: " + numFrames);
-        System.out.println("numFaults: " + numFaults);
+        System.out.println("FIFO numFrames: " + numFrames);
+        System.out.println("FIFO numFaults: " + numFaults);
     }
 
 }
