@@ -53,7 +53,6 @@ public class Main {
         // FIFO
         FIFO fifo = new FIFO();
         fifo.setNumFrames(4); // part of refString, first integer of reference string
-        fifo.print();
         for(int i=0; i < optTest.size(); i++) {
             if(!fifo.isPageInMemory(optTest.get(i))) {
                 fifo.replacePage(optTest.get(i));
@@ -66,6 +65,7 @@ public class Main {
         // LFU
 
         // OPT
+        // Have not addressed the ambiguity
         OPT opt = new OPT();
         opt.setNumFrames(4);
         for(int i=0; i < optTest.size(); i++) {

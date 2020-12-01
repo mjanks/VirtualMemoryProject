@@ -1,6 +1,8 @@
 package pagingSchemes;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 public class OPT extends Pager{
     int count = 0;
@@ -100,5 +102,6 @@ public class OPT extends Pager{
         System.out.println("OPT numFrames: " + numFrames);
         System.out.println("OPT memoryState: " + memoryState);
         System.out.println("OPT numFaults: " + numFaults);
+        System.out.println("*********************** OPT ***********************");
     }
 }
