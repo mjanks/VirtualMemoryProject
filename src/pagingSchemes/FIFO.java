@@ -62,7 +62,9 @@ public class FIFO extends Pager {
 
     @Override
     public void print() {
+        System.out.println("*********************** FIFO ***********************");
         System.out.println("FIFO numFrames: " + numFrames);
+        System.out.println("FIFO memoryState: " + memoryState);
         System.out.println("FIFO numFaults: " + numFaults);
     }
 

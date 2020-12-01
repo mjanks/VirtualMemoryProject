@@ -96,6 +96,8 @@ public class OPT extends Pager{
 
     @Override
     public void print() {
+        System.out.println("*********************** OPT ***********************");
+        System.out.println("OPT numFrames: " + numFrames);
         System.out.println("OPT memoryState: " + memoryState);
         System.out.println("OPT numFaults: " + numFaults);
     }

@@ -32,16 +32,34 @@ public class Main {
         refString.add(0);
         refString.add(1);
 
+        ArrayList<Integer> optTest = new ArrayList<>();
+        optTest.add(1);
+        optTest.add(2);
+        optTest.add(3);
+        optTest.add(4);
+        optTest.add(2);
+        optTest.add(7);
+        optTest.add(5);
+        optTest.add(1);
+        optTest.add(1);
+        optTest.add(6);
+        optTest.add(4);
+        optTest.add(7);
+        optTest.add(2);
+        optTest.add(1);
+        optTest.add(2);
+        optTest.add(5);
+
         // FIFO
-//        FIFO fifo = new FIFO();
-//        fifo.setNumFrames(3); // part of refString, first integer of reference string
-//        fifo.print();
-//        for(int i=0; i < refString.size(); i++) {
-//            if(!fifo.isPageInMemory(refString.get(i))) {
-//                fifo.replacePage(refString.get(i));
-//            }
-//        }
-//        fifo.print();
+        FIFO fifo = new FIFO();
+        fifo.setNumFrames(4); // part of refString, first integer of reference string
+        fifo.print();
+        for(int i=0; i < optTest.size(); i++) {
+            if(!fifo.isPageInMemory(optTest.get(i))) {
+                fifo.replacePage(optTest.get(i));
+            }
+        }
+        fifo.print();
 
         // LRU
 
@@ -49,16 +67,14 @@ public class Main {
 
         // OPT
         OPT opt = new OPT();
-        opt.setNumFrames(3);
-        for(int i=0; i < refString.size(); i++) {
-            //System.out.println(refString);
-            if(!opt.isPageInMemory(refString.get(i))) {
-                //System.out.println("here");
-                //System.out.println(opt.memoryState);
-                opt.replacePage(refString.get(i), refString, i);
+        opt.setNumFrames(4);
+        for(int i=0; i < optTest.size(); i++) {
+            if(!opt.isPageInMemory(optTest.get(i))) {
+                opt.replacePage(optTest.get(i), optTest, i);
             }
         }
         opt.print();
+
 
 
     }
