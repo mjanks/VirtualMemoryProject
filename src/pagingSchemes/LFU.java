@@ -160,20 +160,43 @@ public class LFU extends Pager {
             return memoryState;
         }
 
-        // UPDATED PAGE REPLACEMENT
+        // UPDATED PAGE REPLACEMENT -- NEED TO REPLACE A PAGE!
         // swap out the smallest frequency
 
+        System.out.println("NEED TO REPLACE PAGE A PAGE");
+        System.out.println("INCOMING PAGE: " + page);
+
         // loop through the keys to find the smallest frequency
-        Set<Integer> keys = memoryAccesses.keySet();
-        Object[] keysArr = keys.toArray();
-        for(int i=0; i < keysArr.length; i++) {
-            currentFreq = (float) memoryStateMap.get(keysArr[i]) / (float) memoryAccesses.get(keysArr[i]);
-            System.out.println("StateMap: " + memoryStateMap.get(keysArr[i]));
-            System.out.println("Accesses: " + memoryAccesses.get(keysArr[i]));
-            if(currentFreq < smallestFreq)
+        //Set<Integer> keys = memoryAccesses.keySet();
+        //Object[] keysArr = keys.toArray();
+        smallestFreq = 1000000000;
+        System.out.println("Current memory state: " + memoryState);
+        for(int i=0; i < memoryState.size(); i++) {
+            currentFreq = (float) memoryStateMap.get(memoryState.get(i)) /
+                    (float) memoryAccesses.get(memoryState.get(i));
+            System.out.println("memoryStateMap.get(memoryState.get(i)) = " + memoryStateMap.get(memoryState.get(i)) + " i: " + i);
+            System.out.println("memoryAccesses.get(memoryState.get(i)) = " + memoryAccesses.get(memoryState.get(i)) + " index: " + i);
+            System.out.println("memoryState.get(i) = " + memoryState.get(i) + " index: " + i);
+            if(currentFreq < smallestFreq) {
                 smallestFreq = currentFreq;
+                pageToReplace = memoryState.get(i); // set the key of the pageToReplace
+                System.out.println("pageToReplace: " + pageToReplace);
+            }
         }
+
+
+//        for(int i=0; i < keysArr.length; i++) {
+//            currentFreq = (float) memoryStateMap.get(keysArr[i]) / (float) memoryAccesses.get(keysArr[i]);
+//            System.out.println("StateMap: " + memoryStateMap.get(keysArr[i]));
+//            System.out.println("Accesses: " + memoryAccesses.get(keysArr[i]));
+//            if(currentFreq < smallestFreq)
+//                smallestFreq = currentFreq;
+//                pageToReplace = (Integer) keysArr[i]; // set the key of the pageToReplace
+//        }
+
         System.out.println("smallestFreq: " + smallestFreq);
+
+
 
 
 
@@ -271,6 +294,41 @@ public class LFU extends Pager {
                     "memoryStateMap " +
                     "after increment: " + memoryStateMap);
         }
+
+        // page has been accessed, need to increment values of all keys in memoryAccess
+        // and possibly add the current page to memoryAccesses if it's not already there
+
+        // if memoryAccesses is empty, add the page and initialize
+        if(memoryAccesses.isEmpty()) {
+            memoryAccesses.put(page, 1);
+            System.out.println("memoryAccesses isEmpty(): " + memoryAccesses);
+        } else {
+            // increment the values for all keys in memoryAccesses
+            Set<Integer> keys = memoryAccesses.keySet();
+            Object[] keysArr = keys.toArray();
+            for(int i=0; i < keysArr.length; i++) {
+                // increment value of key
+                int count = memoryAccesses.get(keysArr[i]);
+                System.out.println("memoryAccesses before increment: " + memoryAccesses);
+                count++;
+                memoryAccesses.put((Integer) keysArr[i], count);
+                System.out.println("memoryAccesses after increment: " + memoryAccesses);
+            }
+
+            // check if current page needs to be added
+            if(!memoryAccesses.containsKey(page)) {
+                //System.out.println("key: " + keysArr[i]);
+                System.out.println("memoryAccesses before add: " + memoryAccesses);
+                memoryAccesses.put(page, 1);
+                System.out.println("memoryAccesses after add: " + memoryAccesses);
+            }
+        }
+
+
+
+
+
+
 
 
 
