@@ -3,6 +3,7 @@ package pagingSchemes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class LFU extends Pager {
     // Make memoryState a HashMap with key=page no and value=count
@@ -10,7 +11,9 @@ public class LFU extends Pager {
     int smallestValue;
     int pageToReplace;
     boolean pageReplacementSet = false;
+    int key;
     HashMap<Integer, Integer> memoryStateMap = new HashMap<>();
+    HashMap<Integer, Integer> memoryAccesses = new HashMap<>();
     ArrayList<Integer> memoryState = new ArrayList<>();
 
 
@@ -28,14 +31,65 @@ public class LFU extends Pager {
                 count++;
                 memoryStateMap.put(page, count);
                 System.out.println("memoryStateMap ALREADY CONTAINS page, so increment count, " +
-                        "memoryStateMap " +
-                        "after increment: " + memoryStateMap);
+                        "memoryStateMap " + "after increment: " + memoryStateMap);
+
+                // page has been accessed, need to increment values of all keys in memoryAccess
+                // and possibly add the current page to memoryAccesses if it's not already there
+
+                // if memoryAccesses is empty, add the page and initialize
+                if(memoryAccesses.isEmpty()) {
+                    memoryAccesses.put(page, 1);
+                    System.out.println("memoryAccesses isEmpty(): " + memoryAccesses);
+                } else {
+                    // increment the values for all keys in memoryAccesses
+                    Set<Integer> keys = memoryAccesses.keySet();
+                    Object[] keysArr = keys.toArray();
+                    for(int j=0; j < keysArr.length; j++) {
+                        // increment value of key
+                        int count = memoryAccesses.get(keysArr[j]);
+                        System.out.println("memoryAccesses before increment: " + memoryAccesses);
+                        count++;
+                        memoryAccesses.put((Integer) keysArr[j], count);
+                        System.out.println("memoryAccesses after increment: " + memoryAccesses);
+                    }
+
+                    // check if current page needs to be added
+                    if(!memoryAccesses.containsKey(page)) {
+                        //System.out.println("key: " + keysArr[i]);
+                        System.out.println("memoryAccesses before add: " + memoryAccesses);
+                        memoryAccesses.put(page, 1);
+                        System.out.println("memoryAccesses after add: " + memoryAccesses);
+                    }
+                }
+
+//                // increment access count for all key/value pairs in memoryStateMap
+//                for (Map.Entry mapElement : memoryAccesses.entrySet()) {
+//                    int key = (Integer) mapElement.getKey();
+//                    //int value = (Integer) mapElement.getValue();
+//                    if(page != key) {
+//                        // add key, initialize to 1
+//                        System.out.println("key: " + key);
+//                        memoryAccesses.put(page, 1);
+//                        System.out.println("memoryAccesses: " + memoryAccesses);
+//                    } else {
+//                        // increment value of key
+//                        int count = memoryAccesses.get(key);
+//                        System.out.println("memoryAccesses before increment: " + memoryAccesses);
+//                        count++;
+//                        memoryAccesses.put(key, count);
+//                        System.out.println("memoryAccesses after increment: " + memoryAccesses);
+//                    }
+//
+//                    //System.out.println(key + " : " + value);
+//                }
+
 
                 return true;
             }
         }
         return false;
     }
+
 
     public ArrayList<Integer> replacePage(int page) {
         if (memoryState.size() < numFrames) {
@@ -68,30 +122,58 @@ public class LFU extends Pager {
                         "after increment: " + memoryStateMap);
             }
 
+            // page has been accessed, need to increment values of all keys in memoryAccess
+            // and possibly add the current page to memoryAccesses if it's not already there
 
-            // need to increment the counter for all pages in memoryState
-//            for(int i=0; i < memoryState.size(); i++) {
-//                // check if page is in HashMap
-//                System.out.println("memoryStateMap: " + memoryStateMap);
-//                System.out.println("memoryStateMap.containsKey(memoryState.get(i)): " +
-//                        memoryStateMap.containsKey(memoryState.get(i)));
-//                if(!memoryStateMap.containsKey(memoryState.get(i))) {
-//                    // add to hash map and initialize value(count) to 1
-//                    memoryStateMap.put(memoryState.get(i), 1); // first time so count starts at 1
-//                    System.out.println("DOES NOT contain the page, value should be initialized to 1, " +
-//                            "memoryStateMap after add: " + memoryStateMap);
+            // if memoryAccesses is empty, add the page and initialize
+            if(memoryAccesses.isEmpty()) {
+                memoryAccesses.put(page, 1);
+                System.out.println("memoryAccesses isEmpty(): " + memoryAccesses);
+            } else {
+                // increment the values for all keys in memoryAccesses
+                Set<Integer> keys = memoryAccesses.keySet();
+                Object[] keysArr = keys.toArray();
+                for(int i=0; i < keysArr.length; i++) {
+                    // increment value of key
+                    int count = memoryAccesses.get(keysArr[i]);
+                    System.out.println("memoryAccesses before increment: " + memoryAccesses);
+                    count++;
+                    memoryAccesses.put((Integer) keysArr[i], count);
+                    System.out.println("memoryAccesses after increment: " + memoryAccesses);
+                }
+
+                // check if current page needs to be added
+                if(!memoryAccesses.containsKey(page)) {
+                    //System.out.println("key: " + keysArr[i]);
+                    System.out.println("memoryAccesses before add: " + memoryAccesses);
+                    memoryAccesses.put(page, 1);
+                    System.out.println("memoryAccesses after add: " + memoryAccesses);
+                }
+            }
+
+
+
+//            for (Map.Entry mapElement : memoryAccesses.entrySet()) {
+//                key = (Integer) mapElement.getKey();
+//                //int value = (Integer) mapElement.getValue();
+//                if(page != key) {
+//                    // add key, initialize to 1
+//                    System.out.println("key: " + key);
+//                    memoryAccesses.put(page, 1);
+//                    System.out.println("memoryAccesses: " + memoryAccesses);
 //                } else {
-//                    // increment count for page
-//                    count = memoryStateMap.get(memoryState.get(i));
-//                    System.out.println("memoryStateMap before increment, page ALREADY IN map: " +
-//                            memoryStateMap);
+//                    // increment value of key
+//                    int count = memoryAccesses.get(key);
+//                    System.out.println("memoryAccesses before increment: " + memoryAccesses);
 //                    count++;
-//                    memoryStateMap.put(memoryState.get(i), count);
-//                    System.out.println("memoryStateMap ALREADY CONTAINS page, so increment count, " +
-//                            "memoryStateMap " +
-//                            "after increment: " + memoryStateMap);
+//                    memoryAccesses.put(key, count);
+//                    System.out.println("memoryAccesses after increment: " + memoryAccesses);
 //                }
+//
+//                //System.out.println(key + " : " + value);
 //            }
+
+
 
             System.out.println("numFaults: " + numFaults);
             System.out.println("Current memory state:");
@@ -147,8 +229,6 @@ public class LFU extends Pager {
                         }
                     }
                 }
-
-
     //            if(value == smallestValue && memoryState.contains(key)) {
     //                pageToReplace = key;
     //            }
@@ -158,13 +238,6 @@ public class LFU extends Pager {
             smallestValue++;
         }
 
-
-
-//        for(int i=0; i < memoryStateMap.size(); i++) {
-//            if(memoryStateMap.get(i).equals(greatestValue)) {
-//                key = i;
-//            }
-//        }
 
         // remove the page 'key' from memoryState
         System.out.println("About to remove page " + pageToReplace + " memoryState: " + memoryState);
