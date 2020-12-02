@@ -12,6 +12,8 @@ public class LFU extends Pager {
     int pageToReplace;
     boolean pageReplacementSet = false;
     int key;
+    float smallestFreq = 1000000000;
+    float currentFreq;
     HashMap<Integer, Integer> memoryStateMap = new HashMap<>();
     HashMap<Integer, Integer> memoryAccesses = new HashMap<>();
     ArrayList<Integer> memoryState = new ArrayList<>();
@@ -152,94 +154,91 @@ public class LFU extends Pager {
             }
 
 
-
-//            for (Map.Entry mapElement : memoryAccesses.entrySet()) {
-//                key = (Integer) mapElement.getKey();
-//                //int value = (Integer) mapElement.getValue();
-//                if(page != key) {
-//                    // add key, initialize to 1
-//                    System.out.println("key: " + key);
-//                    memoryAccesses.put(page, 1);
-//                    System.out.println("memoryAccesses: " + memoryAccesses);
-//                } else {
-//                    // increment value of key
-//                    int count = memoryAccesses.get(key);
-//                    System.out.println("memoryAccesses before increment: " + memoryAccesses);
-//                    count++;
-//                    memoryAccesses.put(key, count);
-//                    System.out.println("memoryAccesses after increment: " + memoryAccesses);
-//                }
-//
-//                //System.out.println(key + " : " + value);
-//            }
-
-
-
             System.out.println("numFaults: " + numFaults);
             System.out.println("Current memory state:");
             System.out.println(memoryState);
             return memoryState;
         }
 
-        // Need to replace a page. Replace the page in memoryState with the key
-        // of the smallest value in memoryStateMap
-        // Referenced:
-        // https://www.geeksforgeeks.org/traverse-through-a-hashmap-in-java/
-        System.out.println("memoryStateMap.size(): " + memoryStateMap.size());
-        smallestValue = 1000000000;
-        for (Map.Entry mapElement : memoryStateMap.entrySet()) {
-            int key = (Integer) mapElement.getKey();
-            int value = (Integer) mapElement.getValue();
-            //smallestValue = value;
-            if (value < smallestValue)
-                smallestValue = value;
+        // UPDATED PAGE REPLACEMENT
+        // swap out the smallest frequency
 
-            System.out.println(key + " : " + value);
+        // loop through the keys to find the smallest frequency
+        Set<Integer> keys = memoryAccesses.keySet();
+        Object[] keysArr = keys.toArray();
+        for(int i=0; i < keysArr.length; i++) {
+            currentFreq = (float) memoryStateMap.get(keysArr[i]) / (float) memoryAccesses.get(keysArr[i]);
+            System.out.println("StateMap: " + memoryStateMap.get(keysArr[i]));
+            System.out.println("Accesses: " + memoryAccesses.get(keysArr[i]));
+            if(currentFreq < smallestFreq)
+                smallestFreq = currentFreq;
         }
-        System.out.println("smallestValue: " + smallestValue);
-        System.out.println("page: " + page);
+        System.out.println("smallestFreq: " + smallestFreq);
 
-//        for(int i=0; i <= memoryStateMap.size(); i++) {
-//            System.out.println("memoryStateMap.get(i): " + memoryStateMap.get(i));
-//            if(memoryStateMap.get(i) > greatestValue) {
-//                greatestValue = memoryStateMap.get(i);
+
+
+
+
+
+//        // Need to replace a page. Replace the page in memoryState with the key
+//        // of the smallest value in memoryStateMap
+//        // Referenced:
+//        // https://www.geeksforgeeks.org/traverse-through-a-hashmap-in-java/
+//        System.out.println("memoryStateMap.size(): " + memoryStateMap.size());
+//        smallestValue = 1000000000;
+//        for (Map.Entry mapElement : memoryStateMap.entrySet()) {
+//            int key = (Integer) mapElement.getKey();
+//            int value = (Integer) mapElement.getValue();
+//            //smallestValue = value;
+//            if (value < smallestValue)
+//                smallestValue = value;
+//
+//            System.out.println(key + " : " + value);
+//        }
+//        System.out.println("smallestValue: " + smallestValue);
+//        System.out.println("page: " + page);
+//
+////        for(int i=0; i <= memoryStateMap.size(); i++) {
+////            System.out.println("memoryStateMap.get(i): " + memoryStateMap.get(i));
+////            if(memoryStateMap.get(i) > greatestValue) {
+////                greatestValue = memoryStateMap.get(i);
+////            }
+////        }
+//
+//        // get key of smallest value from memoryStateMap
+//        // check that key is in memoryState
+//        pageReplacementSet = false;
+//        while(!pageReplacementSet) {
+//            for (Map.Entry mapElement : memoryStateMap.entrySet()) {
+//                int key = (Integer) mapElement.getKey();
+//                int value = ((Integer) mapElement.getValue());
+//
+//                System.out.println("memoryState: " + memoryState + "key: " + key + " value: " + value);
+//
+//                if (value == smallestValue) {
+//                    System.out.println("value == smallest value: " + value + " " + smallestValue);
+//                    for (int i = 0; i < memoryState.size(); i++) {
+//                        System.out.println("memoryState.get(i): " + memoryState.get(i));
+//                        System.out.println("key: " + key);
+//                        if (memoryState.get(i) == key) { //
+//                            pageToReplace = key;
+//                            System.out.println("******key: " + key);
+//                            System.out.println("****pageToReplace: " + pageToReplace);
+//                            //pageReplacementSet = true;
+//                        }
+//                    }
+//                }
+//    //            if(value == smallestValue && memoryState.contains(key)) {
+//    //                pageToReplace = key;
+//    //            }
+//
+//                //System.out.println(key + " : " + value);
 //            }
+//            smallestValue++;
 //        }
 
-        // get key of smallest value from memoryStateMap
-        // check that key is in memoryState
-        pageReplacementSet = false;
-        while(!pageReplacementSet) {
-            for (Map.Entry mapElement : memoryStateMap.entrySet()) {
-                int key = (Integer) mapElement.getKey();
-                int value = ((Integer) mapElement.getValue());
 
-                System.out.println("memoryState: " + memoryState + "key: " + key + " value: " + value);
-
-                if (value == smallestValue) {
-                    System.out.println("value == smallest value: " + value + " " + smallestValue);
-                    for (int i = 0; i < memoryState.size(); i++) {
-                        System.out.println("memoryState.get(i): " + memoryState.get(i));
-                        System.out.println("key: " + key);
-                        if (memoryState.get(i) == key) { //
-                            pageToReplace = key;
-                            System.out.println("******key: " + key);
-                            System.out.println("****pageToReplace: " + pageToReplace);
-                            pageReplacementSet = true;
-                        }
-                    }
-                }
-    //            if(value == smallestValue && memoryState.contains(key)) {
-    //                pageToReplace = key;
-    //            }
-
-                //System.out.println(key + " : " + value);
-            }
-            smallestValue++;
-        }
-
-
-        // remove the page 'key' from memoryState
+        // remove the page pageToReplace from memoryState
         System.out.println("About to remove page " + pageToReplace + " memoryState: " + memoryState);
         System.out.println("pageToReplace " + pageToReplace);
         memoryState.remove(memoryState.indexOf(pageToReplace));
