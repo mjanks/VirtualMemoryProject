@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class FIFO extends Pager {
 
-    // check if page is in queue
+    // check if page is in memory
     public boolean isPageInMemory(int page) {
         for(int i=0; i < memoryState.size(); i++) {
             if (page == memoryState.get(i)) {

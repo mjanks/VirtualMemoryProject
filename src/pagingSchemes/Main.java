@@ -61,10 +61,6 @@ public class Main {
 //        fifo.print();
 
 
-
-
-        // LFU
-
         // OPT
         // Have not addressed the ambiguity
 //        OPT opt = new OPT();
@@ -77,14 +73,27 @@ public class Main {
 //        opt.print();
 
         // LRU
-        LRU lru = new LRU();
-        lru.setNumFrames(4);
+//        LRU lru = new LRU();
+//        lru.setNumFrames(4);
+//        for(int i=0; i < testData.size(); i++) {
+//            if (!lru.isPageInMemory(testData.get(i))) {
+//                lru.replacePage(testData.get(i));
+//
+//            }
+//        }
+//        lru.print();
+
+        // LFU
+        LFU lfu = new LFU();
+        lfu.setNumFrames(4);
         for(int i=0; i < testData.size(); i++) {
-            if (!lru.isPageInMemory(testData.get(i))) {
-                lru.replacePage(testData.get(i));
+            if (!lfu.isPageInMemory(testData.get(i))) {
+                lfu.replacePage(testData.get(i));
+
             }
         }
-        lru.print();
+        lfu.print();
+
 
 
 
