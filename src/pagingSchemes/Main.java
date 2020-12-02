@@ -1,103 +1,75 @@
 package pagingSchemes;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        // need to read in from 'pages.dat' and parse
-        // first integer is numFrames
-        // the rest go into 'refString'
-        // read in up to '-1', delimiter
+        int x = 0;
+        Scanner scan = null;
+        try {
+            scan = new Scanner(new File("pages.dat"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
-        // for testing
-        ArrayList<Integer> refString = new ArrayList<>();
-        refString.add(7);
-        refString.add(0);
-        refString.add(1);
-        refString.add(2);
-        refString.add(0);
-        refString.add(3);
-        refString.add(0);
-        refString.add(4);
-        refString.add(2);
-        refString.add(3);
-        refString.add(0);
-        refString.add(3);
-        refString.add(2);
-        refString.add(1);
-        refString.add(2);
-        refString.add(0);
-        refString.add(1);
-        refString.add(7);
-        refString.add(0);
-        refString.add(1);
+        ArrayList<Integer> try1 = new ArrayList<>();
+        while(scan.hasNextInt()) {
+            x = scan.nextInt();
+            if (x == -1) {
+                // run all of the pagers
 
-        ArrayList<Integer> testData = new ArrayList<>();
-        testData.add(1);
-        testData.add(2);
-        testData.add(3);
-        testData.add(4);
-        testData.add(2);
-        testData.add(7);
-        testData.add(5);
-        testData.add(1);
-        testData.add(1);
-        testData.add(6);
-        testData.add(4);
-        testData.add(7);
-        testData.add(2);
-        testData.add(1);
-        testData.add(2);
-        testData.add(5);
+                System.out.println("FIFO:");
+                FIFO fifo = new FIFO();
+                fifo.setNumFrames(try1.get(0)); // part of refString, first integer of reference string
+                for (int i = 1; i < try1.size(); i++) {
+                    if (!fifo.isPageInMemory(try1.get(i))) {
+                        fifo.replacePage(try1.get(i));
+                    }
+                }
+                System.out.println("FIFO numFaults: " + fifo.getNumFaults());
 
-        // FIFO
-//        FIFO fifo = new FIFO();
-//        fifo.setNumFrames(4); // part of refString, first integer of reference string
-//        for(int i=0; i < testData.size(); i++) {
-//            if(!fifo.isPageInMemory(testData.get(i))) {
-//                fifo.replacePage(testData.get(i));
-//            }
-//        }
-//        fifo.print();
+                // OPT
+                // Have not addressed the ambiguity
+                System.out.println("OPT:");
+                OPT opt = new OPT();
+                opt.setNumFrames(try1.get(0));
+                for(int i=1; i < try1.size(); i++) {
+                    if(!opt.isPageInMemory(try1.get(i))) {
+                        opt.replacePage(try1.get(i), try1, i);
+                    }
+                }
+                System.out.println("OPT numFaults: " + opt.getNumFaults());
 
+                // LRU
+                System.out.println("LRU:");
+                LRU lru = new LRU();
+                lru.setNumFrames(try1.get(0));
+                for(int i=1; i < try1.size(); i++) {
+                    if (!lru.isPageInMemory(try1.get(i))) {
+                        lru.replacePage(try1.get(i));
+                    }
+                }
+                System.out.println("LRU numFaults: " + lru.getNumFaults());
 
-        // OPT
-        // Have not addressed the ambiguity
-//        OPT opt = new OPT();
-//        opt.setNumFrames(4);
-//        for(int i=0; i < testData.size(); i++) {
-//            if(!opt.isPageInMemory(testData.get(i))) {
-//                opt.replacePage(testData.get(i), testData, i);
-//            }
-//        }
-//        opt.print();
+                // LFU
+                System.out.println("LFU:");
+                LFU lfu = new LFU();
+                lfu.setNumFrames(try1.get(0));
+                for(int i=1; i < try1.size(); i++) {
+                    if (!lfu.isPageInMemory(try1.get(i))) {
+                        lfu.replacePage(try1.get(i));
+                    }
+                }
+                System.out.println("LFU numFaults: " + lfu.getNumFaults());
 
-        // LRU
-//        LRU lru = new LRU();
-//        lru.setNumFrames(4);
-//        for(int i=0; i < testData.size(); i++) {
-//            if (!lru.isPageInMemory(testData.get(i))) {
-//                lru.replacePage(testData.get(i));
-//
-//            }
-//        }
-//        lru.print();
-
-        // LFU
-        LFU lfu = new LFU();
-        lfu.setNumFrames(4);
-        for(int i=0; i < testData.size(); i++) {
-            if (!lfu.isPageInMemory(testData.get(i))) {
-                lfu.replacePage(testData.get(i));
-
+                // clear contents of try1, then go to next try
+                try1.clear();
+            } else {
+                try1.add(x);
             }
         }
-        lfu.print();
-
-
-
-
     }
-
 }
-
