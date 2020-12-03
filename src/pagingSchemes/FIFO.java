@@ -1,5 +1,14 @@
 package pagingSchemes;
 
+/*
+Virtual Memory Program Assignment
+Created by: Michael Janks
+COSC 423
+Prof: Matt Evett
+Fall 2020
+Eastern Michigan University
+*/
+
 import java.util.ArrayList;
 
 public class FIFO extends Pager {

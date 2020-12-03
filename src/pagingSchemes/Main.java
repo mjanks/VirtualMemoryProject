@@ -1,5 +1,20 @@
 package pagingSchemes;
 
+/*
+Virtual Memory Program Assignment
+Created by: Michael Janks
+COSC 423
+Prof: Matt Evett
+Fall 2020
+Eastern Michigan University
+
+This program simulates four different paging schemes: FIFO, LRU, LFU, and OPT. The data is read in from
+the file pages.dat and then the four paging schemes are run. The reference string and memory frames are displayed
+in a table. At the end, a brief summary including the number of page faults for each scheme and the optimal
+percentage is displayed.
+*/
+
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -23,6 +38,7 @@ public class Main {
         while(scan.hasNextInt()) {
             x = scan.nextInt();
             if (x == -1) {
+
                 // run all of the pagers, print the data tables
                 // FIFO  ********************************************************************************************
                 row = 0;
@@ -51,16 +67,16 @@ public class Main {
                     }
                 }
                 for(int i=1; i < try1.size(); i++) {
-                    System.out.print(try1.get(i) + " ");
+                    System.out.printf("%-3s", try1.get(i) + " ");
                 }
                 System.out.println();
                 for(int i=0; i < try1.size(); i++) {
-                    System.out.print("__");
+                    System.out.print("___");
                 }
                 System.out.println();
                 for(int i=0; i < fifo.getNumFrames(); i++) {
                     for(int j=0; j < try1.size(); j++) {
-                        System.out.print(memoryTableFIFO[i][j] + " ");
+                        System.out.printf("%-3s", memoryTableFIFO[i][j] + " ");
                     }
                     System.out.println();
                 }
@@ -93,16 +109,16 @@ public class Main {
                     }
                 }
                 for(int i=1; i < try1.size(); i++) {
-                    System.out.print(try1.get(i) + " ");
+                    System.out.printf("%-3s", try1.get(i) + " ");
                 }
                 System.out.println();
                 for(int i=0; i < try1.size(); i++) {
-                    System.out.print("__");
+                    System.out.print("___");
                 }
                 System.out.println();
                 for(int i=0; i < lru.getNumFrames(); i++) {
                     for(int j=0; j < try1.size(); j++) {
-                        System.out.print(memoryTableLRU[i][j] + " ");
+                        System.out.printf("%-3s", memoryTableLRU[i][j] + " ");
                     }
                     System.out.println();
                 }
@@ -135,16 +151,16 @@ public class Main {
                     }
                 }
                 for(int i=1; i < try1.size(); i++) {
-                    System.out.print(try1.get(i) + " ");
+                    System.out.printf("%-3s", try1.get(i) + " ");
                 }
                 System.out.println();
                 for(int i=0; i < try1.size(); i++) {
-                    System.out.print("__");
+                    System.out.print("___");
                 }
                 System.out.println();
                 for(int i=0; i < lfu.getNumFrames(); i++) {
                     for(int j=0; j < try1.size(); j++) {
-                        System.out.print(memoryTableLFU[i][j] + " ");
+                        System.out.printf("%-3s", memoryTableLFU[i][j] + " ");
                     }
                     System.out.println();
                 }
@@ -177,27 +193,30 @@ public class Main {
                         col++;
                     }
                 }
+
+
                 for(int i=1; i < try1.size(); i++) {
-                    System.out.print(try1.get(i) + " ");
+                    System.out.printf("%-3s", try1.get(i) + " ");
                 }
                 System.out.println();
                 for(int i=0; i < try1.size(); i++) {
-                    System.out.print("__");
+                    System.out.print("___");
                 }
                 System.out.println();
                 for(int i=0; i < opt.getNumFrames(); i++) {
                     for(int j=0; j < try1.size(); j++) {
-                        System.out.print(memoryTableOPT[i][j] + " ");
+                        System.out.printf("%-3s", memoryTableOPT[i][j] + " ");
                     }
                     System.out.println();
                 }
+
                 System.out.println();
 
                 // printing the end summary
                 float fifoOptimal = (fifo.getNumFaults()/opt.getNumFaults()) * 100;
                 float lruOptimal =  (lru.getNumFaults()/opt.getNumFaults()) * 100;
                 float lfuOptimal =  (lfu.getNumFaults()/opt.getNumFaults()) * 100;
-                System.out.println("Using " + fifo.getNumFrames() + "frames, the reference string yielded:");
+                System.out.println("Using " + fifo.getNumFrames() + " frames, the reference string yielded:");
                 System.out.printf("%-10s", "Scheme");
                 System.out.printf("%-10s", "#Faults");
                 System.out.printf("%-20s", "%Optimal");

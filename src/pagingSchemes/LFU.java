@@ -1,5 +1,14 @@
 package pagingSchemes;
 
+/*
+Virtual Memory Program Assignment
+Created by: Michael Janks
+COSC 423
+Prof: Matt Evett
+Fall 2020
+Eastern Michigan University
+*/
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -23,9 +32,7 @@ public class LFU extends Pager {
                 count++;
                 memoryStateMap.put(page, count);
 
-                // page has been accessed, need to increment values of all keys in memoryAccess
-                // and possibly add the current page to memoryAccesses if it's not already there
-
+                // page has been accessed
                 // if memoryAccesses is empty, add the page and initialize
                 if(memoryAccesses.isEmpty()) {
                     memoryAccesses.put(page, 1);
@@ -67,9 +74,7 @@ public class LFU extends Pager {
                 memoryStateMap.put(page, count);
             }
 
-            // page has been accessed, need to increment values of all keys in memoryAccess
-            // and possibly add the current page to memoryAccesses if it's not already there
-
+            // page has been accessed
             // if memoryAccesses is empty, add the page and initialize
             if(memoryAccesses.isEmpty()) {
                 memoryAccesses.put(page, 1);
@@ -121,9 +126,7 @@ public class LFU extends Pager {
             memoryStateMap.put(page, count);
         }
 
-        // page has been accessed, need to increment values of all keys in memoryAccess
-        // and possibly add the current page to memoryAccesses if it's not already there
-
+        // page has been accessed
         // if memoryAccesses is empty, add the page and initialize
         if(memoryAccesses.isEmpty()) {
             memoryAccesses.put(page, 1);
