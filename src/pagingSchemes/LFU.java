@@ -18,9 +18,6 @@ public class LFU extends Pager {
     public boolean isPageInMemory(int page) {
         for(int i=0; i < memoryState.size(); i++) {
             if (page == memoryState.get(i)) {
-                // set up for print
-                pageArr.add(page);
-                print(page);
                 // increment count for page
                 count = memoryStateMap.get(page);
                 count++;
@@ -56,9 +53,6 @@ public class LFU extends Pager {
     public ArrayList<Integer> replacePage(int page) {
         if (memoryState.size() < numFrames) {
             memoryState.add(page); // add to memory
-            // set up for print
-            pageArr.add(page);
-            print(page);
             numFaults++; // increment faults
 
             // need to increment count for single page
@@ -113,9 +107,6 @@ public class LFU extends Pager {
         // remove the page pageToReplace from memoryState
         memoryState.remove(memoryState.indexOf(pageToReplace));
         memoryState.add(page); // add new page to memory state
-        // set up for print
-        pageArr.add(page);
-        print(page);
         numFaults++; // increment faults
 
         // need to increment count for single page

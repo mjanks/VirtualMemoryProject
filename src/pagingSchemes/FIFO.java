@@ -8,9 +8,6 @@ public class FIFO extends Pager {
     public boolean isPageInMemory(int page) {
         for(int i=0; i < memoryState.size(); i++) {
             if (page == memoryState.get(i)) {
-                // set up for print
-                pageArr.add(page);
-                print(page);
                 return true;
             }
         }
@@ -21,9 +18,6 @@ public class FIFO extends Pager {
     public ArrayList<Integer> replacePage(int page) {
         if (memoryState.size() < numFrames) {
             memoryState.add(page);
-            // set up for print
-            pageArr.add(page);
-            print(page);
             numFaults++;
             return memoryState;
         }
@@ -31,9 +25,6 @@ public class FIFO extends Pager {
         // if no match AND memoryState FULL (size = numFrames),
         memoryState.remove(0); // remove the first element of the ArrayList memoryState
         memoryState.add(page); // add page to the memoryState
-        // setup for print
-        pageArr.add(page);
-        print(page);
         numFaults++;
         return memoryState;
     }
@@ -47,4 +38,6 @@ public class FIFO extends Pager {
         System.out.print("Page: " + p);
         System.out.println(" -- Memory State: " + memoryState);
     }
+
+
 }

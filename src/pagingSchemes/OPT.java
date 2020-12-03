@@ -14,11 +14,6 @@ public class OPT extends Pager {
     public boolean isPageInMemory(int page) {
         for(int i=0; i < memoryState.size(); i++) {
             if (page == memoryState.get(i)) {
-
-                // set up for print
-                pageArr.add(page);
-                print(page);
-
                 return true;
             }
         }
@@ -28,9 +23,6 @@ public class OPT extends Pager {
     public ArrayList<Integer> replacePage(int page, ArrayList<Integer> refString, int index) {
         if (memoryState.size() < numFrames) {
             memoryState.add(page);
-            // set up for print
-            pageArr.add(page);
-            print(page);
             numFaults++;
             return memoryState;
         }
@@ -71,9 +63,6 @@ public class OPT extends Pager {
         for(int i=0; i < memoryState.size(); i++) {
             if(memoryState.get(i) == distancePageMap.get(max)) { // key is max key
                 memoryState.set(i, page);
-                // set up for print
-                pageArr.add(page);
-                print(page);
                 numFaults++;
             }
         }

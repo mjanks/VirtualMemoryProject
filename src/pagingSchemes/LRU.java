@@ -13,11 +13,6 @@ public class LRU extends Pager {
     public boolean isPageInMemory(int page) {
         for(int i=0; i < memoryState.size(); i++) {
             if (page == memoryState.get(i)) {
-
-                // set up for print
-                pageArr.add(page);
-                print(page);
-
                 // Update stack because the page was accessed
                 if(lruStack.contains(page)) { // if stack contains page
                     lruStack.remove(lruStack.indexOf(page)); // remove it
@@ -33,9 +28,6 @@ public class LRU extends Pager {
     public ArrayList<Integer> replacePage(int page) {
         if (memoryState.size() < numFrames) {
             memoryState.add(page); // add to memory
-            // set up for print
-            pageArr.add(page);
-            print(page);
             numFaults++; // increment faults
 
             // Stack using a linked list.
@@ -56,11 +48,7 @@ public class LRU extends Pager {
                 memoryState.remove(i);
             }
         }
-
         memoryState.add(page); // add new page to memoryState
-        // set up for print
-        pageArr.add(page);
-        print(page);
         numFaults++;
 
         // update the stack
